@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post
+from .models import Post, Comment, Tag
 from django.utils.safestring import mark_safe
 
 # Register your models here.
@@ -42,3 +42,11 @@ class PostAdmin(admin.ModelAdmin):
         return None
 
     message_length.short_description = "메세지 글자 수"
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass

@@ -1,8 +1,9 @@
 from django.db import models
-
+from django.conf import settings
 
 # Create your models here.
 class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     message = models.TextField()
     photo = models.ImageField(blank=True, upload_to="instagram1/post/%Y/%m/%d")
     is_public = models.BooleanField(default=False, verbose_name="공개여부")

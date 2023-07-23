@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     # local apps    
     'blog1',
     'instagram1',
+    'accounts',
 ]
 
 MIDDLEWARE = [

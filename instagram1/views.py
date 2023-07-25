@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest, Http404
 
 # Create your views here.
 def post_list(request):
@@ -21,10 +21,16 @@ def post_list(request):
         },
     )
 
-def post_detail(request, pk):
-    response = HttpResponse()
-    response.write('Hello World')
-    return response
+def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+    post = get_object_or_404(Post, pk=pk)
+    # DoesNotExist 예외 발생
+    # try:
+    #     post = Post.objects.get(pk=pk)
+    # except Post.DoesNotExist:
+    #     raise Http404
+    return render(request, 'instagram1/post_detail.html', {
+        'post': post,
+    })
 
 def archives_year(request, year):
     return HttpResponse(f"{year}년 archives")

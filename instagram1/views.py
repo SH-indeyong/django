@@ -25,3 +25,6 @@ def post_detail(request, pk):
     response = HttpResponse()
     response.write('Hello World')
     return response
+
+def archives_year(request, year):
+    return HttpResponse(f"{year}년 archives")

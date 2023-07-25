@@ -1,3 +1,5 @@
+from typing import Any
+from django.db import models
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.http import HttpResponse, HttpRequest, Http404
@@ -33,7 +35,16 @@ def post_list(request):
 #         'post': post,
 #     })
 
-post_detail = DetailView.as_view(model=Post)
+class PostDetailView(DetailView):
+    model = Post
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(is_public=True)
+        return qs
+
+post_detail = PostDetailView.as_view(model=Post)
 
 def archives_year(request, year):
     return HttpResponse(f"{year}년 archives")

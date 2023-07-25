@@ -1,3 +1,5 @@
+{% load bootstrap4 %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +28,8 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{post.get_absolute_url}}">
+                    {% comment %} <a href="{% url 'instagram1:post_detail' post.pk %}"> {% endcomment %}
+                    <a href="{{ post.get_absolute_url}}">
                         {{post.message}}
                     </a>
                 </td>
@@ -34,6 +37,10 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% if is_paginated %}
+    {% bootstrap_pagination page_obj size='small' justify_content='center' %}
+{% endif %}
 </body>
 </html>
 

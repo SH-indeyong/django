@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Post
 from django.http import HttpResponse, HttpRequest, Http404
+from django.views.generic import DetailView
 
 # Create your views here.
 def post_list(request):
@@ -21,16 +22,18 @@ def post_list(request):
         },
     )
 
-def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    post = get_object_or_404(Post, pk=pk)
-    # DoesNotExist 예외 발생
-    # try:
-    #     post = Post.objects.get(pk=pk)
-    # except Post.DoesNotExist:
-    #     raise Http404
-    return render(request, 'instagram1/post_detail.html', {
-        'post': post,
-    })
+# def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+#     post = get_object_or_404(Post, pk=pk)
+#     # DoesNotExist 예외 발생
+#     # try:
+#     #     post = Post.objects.get(pk=pk)
+#     # except Post.DoesNotExist:
+#     #     raise Http404
+#     return render(request, 'instagram1/post_detail.html', {
+#         'post': post,
+#     })
+
+post_detail = DetailView.as_view(model=Post)
 
 def archives_year(request, year):
     return HttpResponse(f"{year}년 archives")

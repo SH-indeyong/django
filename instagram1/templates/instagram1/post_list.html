@@ -1,46 +1,42 @@
+{% extends "instagram1/layout.html" %}
 {% load bootstrap4 %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>INSTAGRAM / POST_LIST</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
-<body>
+{% block title %}
+    INSTAGRAM / Post List
+{% endblock title %}
+
+{% block content %}
     <form action="" method="get">
-    <input type="text" name="q" value="{{q}}"/>
-    <input type="submit" value="검색"/>
-</form>
+        <input type="text" name="q" value="{{q}}"/>
+        <input type="submit" value="검색"/>
+    </form>
 
-<table class="table table-bordered table-hover">
-    <tbody>
-        {% for post in post_list %}
-            <tr>
-                <td>
-                    {{post.pk}}
-                </td>
-                <td>
-                    {% if post.photo %}
-                        <img src="{{post.photo.url}}" style="width: 100px;"/>
-                    {% else %}
-                        NO PHOTO
-                    {% endif %}
-                </td>
-                <td>
-                    {% comment %} <a href="{% url 'instagram1:post_detail' post.pk %}"> {% endcomment %}
-                    <a href="{{ post.get_absolute_url}}">
-                        {{post.message}}
-                    </a>
-                </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <table class="table table-bordered table-hover">
+        <tbody>
+            {% for post in post_list %}
+                <tr>
+                    <td>
+                        {{post.pk}}
+                    </td>
+                    <td>
+                        {% if post.photo %}
+                            <img src="{{post.photo.url}}" style="width: 100px;"/>
+                        {% else %}
+                            NO PHOTO
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% comment %} <a href="{% url 'instagram1:post_detail' post.pk %}"> {% endcomment %}
+                        <a href="{{ post.get_absolute_url}}">
+                            {{post.message}}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
-{% if is_paginated %}
-    {% bootstrap_pagination page_obj size='small' justify_content='center' %}
-{% endif %}
-</body>
-</html>
-
+    {% if is_paginated %}
+        {% bootstrap_pagination page_obj size='small' justify_content='center' %}
+    {% endif %}
+{% endblock content %}

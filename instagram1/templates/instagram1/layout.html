@@ -1,4 +1,4 @@
-{% load static %}
+{% load bootstrap4 static %}
 
 <!DOCTYPE html>
 <html>
@@ -68,11 +68,12 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-12">
-          {% for message in messages %}
+          {% bootstrap_messages %}
+          {% comment %} {% for message in messages %}
             <div class='alert alert-{{ message.tags }}'>
               {{ message.message}}
             </div>
-          {% endfor %}
+          {% endfor %} {% endcomment %}
 
           {% block content %} {% endblock content%}
           <hr />

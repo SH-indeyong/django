@@ -27,6 +27,7 @@ def post_new(request):
 
     return render(request, 'instagram1/post_form.html', {
         'form': form,
+        'post': None
     })
 
 @login_required
@@ -49,6 +50,8 @@ def post_edit(request, pk):
 
     return render(request, 'instagram1/post_form.html', {
         'form': form,
+        'post': post
+
     })
 
 def post_list(request):

@@ -1,13 +1,29 @@
 from typing import Any
 from django.db import models
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.http import HttpResponse, HttpRequest, Http404
 from django.views.generic import DetailView, ListView, ArchiveIndexView, YearArchiveView, MonthArchiveView, DayArchiveView, TodayArchiveView, DateDetailView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from .forms import PostForm
 
 # Create your views here.
+def post_new(request):
+    # POST 요청일 때
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save()
+            return redirect(post)
+    # GET 요청일 때
+    else:
+        form = PostForm()
+
+    return render(request, 'instagram1/post_form.html', {
+        'form': form,
+    })
+
 # def post_list(request):
 #     qs = Post.objects.all()
 #     # 결과 없으면 ''

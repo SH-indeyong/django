@@ -1,7 +1,23 @@
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <table>
-        {{ form }}
-    </table>
-    <input type="submit" value="저장" />
-</form>
+{% extends 'instagram1/layout.html' %}
+
+{% block content %}
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="저장" />
+    </form>
+
+    <hr/>
+
+    {% if form.instance %}
+        <a href="{{ form.instance.get_absolute_url }}" class="btn btn-secondary">
+            내용으로
+        </a>
+    {% endif %}
+    <a href="{% url 'instagram1:post_list' %}" class="btn btn-primary">
+        목록
+    </a>
+
+{% endblock %}

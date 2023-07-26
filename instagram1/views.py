@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.http import HttpResponse, HttpRequest, Http404
 from django.views.generic import DetailView, ListView, ArchiveIndexView, YearArchiveView, MonthArchiveView, DayArchiveView, TodayArchiveView, DateDetailView
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .forms import PostForm
@@ -18,6 +19,7 @@ def post_new(request):
             post = form.save(commit=False)
             post.author = request.user      # 현재 로그인된 user instance
             form.save()
+            messages.success(request, '포스팅을 저장했습니다.')
             return redirect(post)
     # GET 요청일 때
     else:
@@ -31,10 +33,16 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
+    # 작성자 Check Tip
+    if post.author != request.user:
+        messages.error(request, '작성자만 수정할 수 있습니다.')
+        return redirect(post)
+
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             post = form.save()
+            messages.success(request, '포스팅을 수정했습니다.')
             return redirect(post)
     else:
         form = PostForm(instance=post)
@@ -43,32 +51,32 @@ def post_edit(request, pk):
         'form': form,
     })
 
-# def post_list(request):
-#     qs = Post.objects.all()
-#     # 결과 없으면 ''
-#     q = request.GET.get("q", "")
+def post_list(request):
+    qs = Post.objects.all()
+    # 결과 없으면 ''
+    q = request.GET.get("q", "")
 
-#     if q:
-#         qs = qs.filter(message__icontains=q)
+    if q:
+        qs = qs.filter(message__icontains=q)
 
-#     # instagram1/templates/instagram1/post_list.html
-#     return render(
-#         request,
-#         "instagram1/post_list.html",
-#         {
-#             "post_list": qs,
-#             'q': q,
-#         },
-#     )
+    # instagram1/templates/instagram1/post_list.html
+    return render(
+        request,
+        "instagram1/post_list.html",
+        {
+            "post_list": qs,
+            'q': q,
+        },
+    )
 
 # post_list = ListView.as_view(model=Post, paginate_by=10)
 
-@method_decorator(login_required, name='dispatch')
-class PostListView(ListView):
-    model = Post
-    paginate_by = 10
+# @method_decorator(login_required, name='dispatch')
+# class PostListView(ListView):
+#     model = Post
+#     paginate_by = 10
 
-post_list = PostListView.as_view()
+# post_list = PostListView.as_view()
 
 # def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
 #     post = get_object_or_404(Post, pk=pk)

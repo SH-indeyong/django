@@ -21,5 +21,8 @@
         <a href="{% url 'instagram1:post_edit' post.pk %}" class="btn btn-info">
             수정
         </a>
+        <a href="{% url 'instagram1:post_delete' post.pk %}" class="btn btn-danger">
+            삭제
+        </a>
     </hr>
 {% endblock content %}

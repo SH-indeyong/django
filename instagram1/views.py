@@ -9,12 +9,15 @@ from django.utils.decorators import method_decorator
 from .forms import PostForm
 
 # Create your views here.
+@login_required
 def post_new(request):
     # POST 요청일 때
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            post = form.save()
+            post = form.save(commit=False)
+            post.author = request.user      # 현재 로그인된 user instance
+            form.save()
             return redirect(post)
     # GET 요청일 때
     else:
@@ -24,6 +27,7 @@ def post_new(request):
         'form': form,
     })
 
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
 
